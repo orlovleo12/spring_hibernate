@@ -30,11 +30,12 @@ public class UserDaoImp implements UserDao {
    }
    @Override
    public User getUserByCar(Car car) {
-      List<User> users = null;
+      List<User> users;
       Session session = sessionFactory.openSession();
       try {
          Transaction transaction = session.beginTransaction();
-         users = (List<User>) session.createQuery("from User where car_id ='" + car.getId() + "'").list();
+         users = (List<User>) session.createQuery("from User where car =:car")
+                 .setParameter("car", car).list();
          transaction.commit();
       } finally {
          session.close();
